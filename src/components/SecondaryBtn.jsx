@@ -1,6 +1,6 @@
 function SecondaryBtn(){
     return <button className="secondary_btn corner_radius uppercase">
-        log in
+        <span>log in</span>
     </button>
 }
 export default SecondaryBtn

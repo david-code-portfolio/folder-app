@@ -12,14 +12,6 @@ $grey_color: rgb(173,173,173);
 $heading_font: Konkhmer Sleokchher;
 $paragraph_font: Inter;
 
-/* ------------Variables-config------------ */
-
-:root{
-    --light_color: #($light_color);
-    --dark_color: #($dark_color);
-    --grey_color: #($grey_color);
-}
-
 h1, h2{
     font-family: $heading_font;
     color: $dark_color;
@@ -27,10 +19,21 @@ h1, h2{
 h5{
     font-family: $paragraph_font;
 }
+p{
+    font-family: $paragraph_font;
+}
+.faded_text{
+    color: $grey_color;
+}
+::selection{
+    color: $dark_color;
+    background-color: $grey_color;
+}
 
 /* ------------Reusable-Styles------------ */
+$border_radius: 2px;
 .corner_radius{
-    border-radius: 2px;
+    border-radius: $border_radius;
 }
 
 /* ------------Body-Modification------------ */
@@ -38,6 +41,7 @@ h5{
 body{
     background-color: $light_color;
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 /* ------------Background-Text------------ */
@@ -54,12 +58,39 @@ body{
     color: $light_color;
     background-color: $dark_color;
     padding: 1rem 2.5rem;
+    max-height: 48px;
     cursor: pointer;
     transition: 0.2s;
+    position: relative;
+    & span, & svg{
+        z-index: 10;
+    }
+
+    &::before{
+        content: "";
+        width: 100%;
+        height: 0;
+        background-color: $light_color;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        border-radius: $border_radius;
+        transition: 0.2s;
+    }
+    &:hover::before{
+        height: 100%;
+    }
+    &:hover, &:hover svg path{
+        fill: $dark_color;        
+        color: $dark_color;
+        box-shadow: 0 0 1rem rgb(0, 0, 0, 0.25);
+    }
 }
-.primary_btn:hover{
-    scale: 1.1;
-}
+
+/* ------------Secondary-Button-Styling------------ */
+
 .secondary_btn{
     font-family: $heading_font;
     font-size: 1rem;
@@ -71,8 +102,30 @@ body{
     max-height: 48px;
     padding: 1rem 4rem;
     cursor: pointer;
+    position: relative;
     transition: 0.2s;
-}
-.secondary_btn:hover{
-    scale: 1.1;
+    & span{
+        position: relative;
+        z-index: 10;
+    }
+
+    &::before{
+        content: "";
+        width: 100%;
+        height: 0;
+        background-color: $dark_color;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        transition: 0.2s;
+    }
+    &:hover::before{
+        height: 100%;
+    }
+    &:hover{
+        color: $light_color;
+        box-shadow: 0 0 1rem rgba(0, 0, 0, 0.25);
+    }
 }
