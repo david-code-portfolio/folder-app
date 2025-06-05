@@ -13,7 +13,7 @@ $greyer_color: rgb(95,95,95);
 $heading_font: Konkhmer Sleokchher;
 $paragraph_font: Inter;
 
-h1, h2{
+h1, h2, button{
     font-family: $heading_font;
     color: $dark_color;
 }
@@ -41,6 +41,7 @@ $border_radius: 2px;
 
 body{
     background-color: $light_color;
+    max-height: 100vh;
 }
 
 /* ------------Background-Text------------ */

@@ -1,4 +1,5 @@
 import SimplyfiedBtn from '../components/button components/SimplyfiedBtn'
+
 function WelcomePage(){
     return <>    
         <h5 className='uppercase font-bold text-base tracking-[0.25em] sm:ml-[80px] ml-[5.35vw] md:mt-[80px] sm:mt-[200px] mt-[240px] select-none lg:text-[1rem] text-[0.75rem] max-lg:w-[275px]'>CREATED BY dávid kšendzuľák | 2025</h5>
