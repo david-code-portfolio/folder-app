@@ -3,6 +3,7 @@
 $light_color: rgb(250,250,250);
 $dark_color: rgb(56,56,56);
 $grey_color: rgb(173,173,173);
+$greyer_color: rgb(95,95,95);
 
 /* ------------Typography------------ */
 
@@ -19,7 +20,7 @@ h1, h2{
 h5{
     font-family: $paragraph_font;
 }
-p{
+p, input{
     font-family: $paragraph_font;
 }
 .faded_text{
