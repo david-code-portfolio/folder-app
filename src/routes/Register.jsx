@@ -1,23 +1,33 @@
 import { Link } from "react-router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import { stringify } from "postcss"
 
 function Register(){
-    const [newUserData, setNewUserData] = useState({
-        name: "",
-        email: "",
-        password: "" 
+
+    /* ------------Get-Data------------ */
+
+    const [users, setUsers] = useState([])
+
+    useEffect(() => {
+        axios.get('http://localhost/portfolio/folder-app/backend/index.php')
+        .then(response => {
+            setUsers(response.data)
+        })
+    }, [])
+
+    /* ------------Register------------ */
+
+    const [formData, setFormData] = useState({
+        
     })
 
     const handleChange = (e) => {
-        setNewUserData((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.value,
-        }))
+        setFormData({...formData, [e.target.name]: e.target.value})
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        window.alert(`Name: ${newUserData.name} Email: ${newUserData.email} Password: ${newUserData.password}`)
     }
 
     return <section>
@@ -33,11 +43,11 @@ function Register(){
         <h1 className="w-fit text-[3rem] m-auto mt-[60px]">Create Your Account</h1>
         <p className="italic w-[500px] m-auto mt-[1rem] text-[1rem]/[2rem] text-justify opacity-60">Create an account to access the library of opportunities and start uploading your documents right now!</p>
         <form onSubmit={handleSubmit} className="w-[500px] m-auto mt-[80px] grid gap-[2.5rem]">
-            <input type="text" name="name" placeholder="Name" onChange={handleChange} required
+            <input onChange={handleChange} type="text" name="name" placeholder="Name" required
                 className="text-[1.5rem] outline-0 w-full border-b-1"/>
-            <input type="email" name="email" placeholder="Email" onChange={handleChange} required
+            <input onChange={handleChange} type="email" name="email" placeholder="Email" required
                 className="text-[1.5rem] outline-0 w-full border-b-1"/>
-            <input type="password" name="password" placeholder="Password" onChange={handleChange} required
+            <input onChange={handleChange} type="password" name="password" placeholder="Password" required
                 className="text-[1.5rem] outline-0 w-full border-b-1"/>
             <button type="submit" className="uppercase cursor-pointer w-fit text-[2rem] hover:translate-x-[10%] hover:opacity-100 duration-200 opacity-60">get started</button>
         </form>

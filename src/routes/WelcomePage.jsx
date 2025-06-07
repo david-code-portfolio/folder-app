@@ -1,7 +1,7 @@
 import SimplyfiedBtn from '../components/button components/SimplyfiedBtn'
 
 function WelcomePage(){
-    return <>    
+    return <>
         <h5 className='uppercase font-bold text-base tracking-[0.25em] sm:ml-[80px] ml-[5.35vw] md:mt-[80px] sm:mt-[200px] mt-[240px] select-none lg:text-[1rem] text-[0.75rem] max-lg:w-[275px]'>CREATED BY dávid kšendzuľák | 2025</h5>
         <h1 className="2xl:text-[18.75rem]/[18.75rem] lg:text-[12rem]/[12rem] sm:text-[8rem]/[8rem] text-[4.5rem]/[4.5rem] font-medium xl:mt-[80px] mt-[20px] lg:ml-[70px] sm:ml-[70px] ml-[4.75vw] cursor-default select-none w-fit">FOLDER.</h1>
         <div className='absolute w-full overflow-hidden h-fit md:top-[95px] top-[220px] -z-10'>
