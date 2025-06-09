@@ -1,10 +1,10 @@
 import { Link } from "react-router"
-import { useState, useEffect } from "react"
-import axios from "axios"
-import { stringify } from "postcss"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router"
 
 function Register(){
-    const [users, setUsers] = useState([])
+    const navigate = useNavigate()
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -21,6 +21,12 @@ function Register(){
     const handleSubmit = async (e) => {
         e.preventDefault()
 
+        /* ------------Find-Existing-User------------ */
+
+        
+
+        /* ------------Create-New-User------------ */
+
         try{
             const res = await fetch("http://localhost/portfolio/folder-app/backend/register.php", {
                 method: "POST",
@@ -33,26 +39,27 @@ function Register(){
                     password: formData.password
                 })
             })
-            const text = await res.text()
-            console.log(text)
+            const data = await res.json();
+            console.log(res)
 
-            fetchUsers()
+            if(data.usernameExists || data.emailExists){
+                window.alert("Email or username already exists!")
+            }
+            else{
+                localStorage.setItem('user', formData)
+                navigate('/dashboard')
+            }
+            setFormData({
+                name: "",
+                email: "",
+                password: ""
+            })
         }
         catch(error){
             console.error("Error sending data:", error);
         }
+        
     }
-
-    const fetchUsers = () => {
-        fetch("http://localhost/portfolio/folder-app/backend/fetchUsers.php")
-        .then((res) => res.json())
-        .then((data) => setUsers(data))
-        .catch((err) => console.error("Failed to fetch users:", err))
-    }
-
-    useEffect(() => {
-        fetchUsers()
-    }, [])
 
     return <section>
         <div className='absolute w-full overflow-hidden h-fit md:top-[95px] top-[220px] -z-10'>
@@ -67,20 +74,14 @@ function Register(){
         <h1 className="w-fit text-[3rem] m-auto mt-[60px]">Create Your Account</h1>
         <p className="italic w-[500px] m-auto mt-[1rem] text-[1rem]/[2rem] text-justify opacity-60">Create an account to access the library of opportunities and start uploading your documents right now!</p>
         <form onSubmit={handleSubmit} className="w-[500px] m-auto mt-[80px] grid gap-[2.5rem]">
-            <input onChange={handleChange} type="text" name="name" placeholder="Name" required
+            <input onChange={handleChange} type="text" name="name" placeholder="Name" required pattern="^[a-zA-Z\s]{1,30}$" maxLength='50' title="Only letters and spaces allowed (max 30 characters)" value={formData.name}
                 className="text-[1.5rem] outline-0 w-full border-b-1"/>
-            <input onChange={handleChange} type="email" name="email" placeholder="Email" required
+            <input onChange={handleChange} type="email" name="email" placeholder="Email" required value={formData.email}
                 className="text-[1.5rem] outline-0 w-full border-b-1"/>
-            <input onChange={handleChange} type="password" name="password" placeholder="Password" required
+            <input onChange={handleChange} type="password" name="password" placeholder="Password" required minLength='6' maxLength='50' value={formData.password}
                 className="text-[1.5rem] outline-0 w-full border-b-1"/>
             <button type="submit" className="uppercase cursor-pointer w-fit text-[2rem] hover:translate-x-[10%] hover:opacity-100 duration-200 opacity-60">get started</button>
         </form>
-
-        {/* ------------Display-Data------------ */}
-
-        {users.map((user, index) => (
-            <h1 key={index}>{user.user_id} - {user.user_name} - {user.user_email}</h1>
-        ))}
     </section>
 }
 export default Register
