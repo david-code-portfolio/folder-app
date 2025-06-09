@@ -1,34 +1,58 @@
 import { Link } from "react-router"
-import { useEffect, useState } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
 import { stringify } from "postcss"
 
 function Register(){
-
-    /* ------------Get-Data------------ */
-
     const [users, setUsers] = useState([])
-
-    useEffect(() => {
-        axios.get('http://localhost/portfolio/folder-app/backend/index.php')
-        .then(response => {
-            setUsers(response.data)
-        })
-    }, [])
-
-    /* ------------Register------------ */
-
     const [formData, setFormData] = useState({
-        
+        name: "",
+        email: "",
+        password: ""
     })
 
     const handleChange = (e) => {
-        setFormData({...formData, [e.target.name]: e.target.value})
+        setFormData((prev) => ({
+            ...prev,
+            [e.target.name]: e.target.value
+        }))
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+
+        try{
+            const res = await fetch("http://localhost/portfolio/folder-app/backend/register.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    password: formData.password
+                })
+            })
+            const text = await res.text()
+            console.log(text)
+
+            fetchUsers()
+        }
+        catch(error){
+            console.error("Error sending data:", error);
+        }
     }
+
+    const fetchUsers = () => {
+        fetch("http://localhost/portfolio/folder-app/backend/fetchUsers.php")
+        .then((res) => res.json())
+        .then((data) => setUsers(data))
+        .catch((err) => console.error("Failed to fetch users:", err))
+    }
+
+    useEffect(() => {
+        fetchUsers()
+    }, [])
 
     return <section>
         <div className='absolute w-full overflow-hidden h-fit md:top-[95px] top-[220px] -z-10'>
@@ -51,6 +75,12 @@ function Register(){
                 className="text-[1.5rem] outline-0 w-full border-b-1"/>
             <button type="submit" className="uppercase cursor-pointer w-fit text-[2rem] hover:translate-x-[10%] hover:opacity-100 duration-200 opacity-60">get started</button>
         </form>
+
+        {/* ------------Display-Data------------ */}
+
+        {users.map((user, index) => (
+            <h1 key={index}>{user.user_id} - {user.user_name} - {user.user_email}</h1>
+        ))}
     </section>
 }
 export default Register
