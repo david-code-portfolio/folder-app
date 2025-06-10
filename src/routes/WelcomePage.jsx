@@ -23,7 +23,7 @@ function WelcomePage(){
 
             <div className=''>
                 <h2 className='uppercase md:text-[4rem] text-[2rem] faded_text mb-[16px]'>about</h2>
-                <p className='italic faded_text text-[16px]/[32px] xl:w-[480px] lg-[25vw] w-full text-justify sm:mb-0 mb-[200px]'>
+                <p className='italic faded_text text-[16px]/[32px] lg:w-[480px] md-[25vw] w-full text-justify sm:mb-0 mb-[200px]'>
                     Welcome in FOLDER, a platform where you can upload, 
                     keep and manage documents you don’t want to lose. 
                     FOLDER was created by 19y.o. web developer from Slovakia. 

@@ -4,6 +4,10 @@ import { useNavigate } from "react-router"
 
 function Register(){
     const [formType, setFormType] = useState(localStorage.getItem('register'))
+    const changeFormType = () => {
+        formType === 'true' ? localStorage.setItem('register', false) : localStorage.setItem('register', true)
+        setFormType(localStorage.getItem('register'))
+    }
     const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
@@ -39,21 +43,21 @@ function Register(){
 
             if(localStorage.getItem('register') === "true"){
                 if(data.loggedIn === false){
-                    console.log(data.message)
+                    window.alert(data.message)
                 }
                 else{
                     localStorage.setItem('user', formData)
-                    console.log(data.message)
+                    window.alert(data.message)
                     navigate('/dashboard')
                 }
             }
             else{
                 if(data.loggedIn === false){
-                    console.log(data.message)
+                    window.alert(data.message)
                 }
                 else{
                     localStorage.setItem('user', formData)
-                    console.log(data.message)
+                    window.alert(data.message)
                     navigate('/dashboard')
                 }
             }
@@ -73,21 +77,21 @@ function Register(){
             <h1 className='lg:text-[600px]/[600px] text-[300px]/[300px] background_text select-none sm:translate-x-[0] translate-x-[-300px]'>FOLDER</h1>
         </div>
         <Link to='/'>
-            <h1 className="uppercase text-[1.5rem] cursor-pointer select-none w-fit mt-[80px] ml-[80px]">folder.</h1>
+            <h1 className="uppercase md:text-[1.5rem] text-[1.25rem] cursor-pointer select-none w-fit sm:mt-[80px] mt-[64px] sm:ml-[80px] ml-[5.35vw]">folder.</h1>
         </Link>
 
         {/* ------------Login-Form------------ */}
 
-        <h1 className="w-[500px] text-[3rem] m-auto mt-[60px]">
+        <h1 className="w-[89.5vw] sm:w-[500px] sm:text-[3rem] text-[2rem] m-auto mt-[60px]">
             {formType == 'true' ? "Create Your Account" : "Welcome Back"}
         </h1>
-        <p className="italic w-[500px] m-auto mt-[1rem] text-[1rem]/[2rem] text-justify opacity-60">
+        <p className="italic w-[89.5vw] sm:w-[500px] m-auto mt-[1rem] text-[1rem]/[2rem] text-justify opacity-60">
             {formType == 'true' ? 
             "Create an account to access the library of opportunities and start uploading your documents right now! " : 
             "We are glad to see you again! To access all the documents you've left here, just log in and you'll be taken to your workspace with all your documents."}
         </p>
 
-        <form onSubmit={handleSubmit} className="w-[500px] m-auto mt-[80px] grid gap-[2.5rem]">
+        <form onSubmit={handleSubmit} className="w-[89.5vw] sm:w-[500px] m-auto sm:mt-[80px] mt-[100px] grid gap-[2.5rem]">
             {formType == 'true' ? 
                 <input onChange={handleChange} type="text" name="name" placeholder="Name" required pattern="^[a-zA-Z\s]{1,30}$" maxLength='50' title="Only letters and spaces allowed (max 30 characters)" value={formData.name}
                     className="text-[1.5rem] outline-0 w-full border-b-1"/> : <></>}
@@ -95,8 +99,16 @@ function Register(){
                 className="text-[1.5rem] outline-0 w-full border-b-1"/>
             <input onChange={handleChange} type="password" name="password" placeholder="Password" required minLength='6' maxLength='50' value={formData.password}
                 className="text-[1.5rem] outline-0 w-full border-b-1"/>
-            <button type="submit" className="uppercase cursor-pointer w-fit text-[2rem] hover:translate-x-[10%] hover:opacity-100 duration-200 opacity-60">get started</button>
+            <button type="submit" className="uppercase cursor-pointer w-fit md:text-[2rem] text-[1.5rem] hover:translate-x-[10%] hover:opacity-100 duration-200 opacity-60">
+                {formType == 'true' ? "get started" : "log in"}
+            </button>
         </form>
+        <span className="sm:flex grid gap-2 mb-[100px] mx-auto w-[89.5vw] sm:w-[500px] mt-[40px]">
+            <p className="opacity-[0.6] text-center sm:text-left">{formType == 'true' ? "Already have an Account?" : "Don't have an account?"}</p>
+            <button onClick={changeFormType} className="opacity-[1] underline cursor-pointer hover:opacity-75 text-center sm:text-left">
+                {formType == 'true' ? "Log in here" : "Register now"}
+            </button>
+        </span>
     </section>
 }
 export default Register
