@@ -16,7 +16,7 @@ function WelcomePage(){
 
             <div className='flex-col flex lg:gap-[10px] justify-end gap-[5px] items-start lg:mb-0 md:mb-[14.5vh] mb-[200px]'>
                 <SimplyfiedBtn button_text={"get started"} page_location={"register"}></SimplyfiedBtn>
-                <SimplyfiedBtn button_text={"log in"} page_location={"login"}></SimplyfiedBtn>
+                <SimplyfiedBtn button_text={"log in"} page_location={"register"}></SimplyfiedBtn>
             </div>
 
             {/* ------------About-section------------ */}

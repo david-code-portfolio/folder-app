@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 
 function Register(){
+    const [formType, setFormType] = useState(localStorage.getItem('register'))
     const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
@@ -21,12 +22,6 @@ function Register(){
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        /* ------------Find-Existing-User------------ */
-
-        
-
-        /* ------------Create-New-User------------ */
-
         try{
             const res = await fetch("http://localhost/portfolio/folder-app/backend/register.php", {
                 method: "POST",
@@ -36,18 +31,31 @@ function Register(){
                 body: JSON.stringify({
                     name: formData.name,
                     email: formData.email,
-                    password: formData.password
+                    password: formData.password,
+                    register: localStorage.getItem('register') || ''
                 })
             })
             const data = await res.json();
-            console.log(res)
 
-            if(data.usernameExists || data.emailExists){
-                window.alert("Email or username already exists!")
+            if(localStorage.getItem('register') === "true"){
+                if(data.loggedIn === false){
+                    console.log(data.message)
+                }
+                else{
+                    localStorage.setItem('user', formData)
+                    console.log(data.message)
+                    navigate('/dashboard')
+                }
             }
             else{
-                localStorage.setItem('user', formData)
-                navigate('/dashboard')
+                if(data.loggedIn === false){
+                    console.log(data.message)
+                }
+                else{
+                    localStorage.setItem('user', formData)
+                    console.log(data.message)
+                    navigate('/dashboard')
+                }
             }
             setFormData({
                 name: "",
@@ -58,7 +66,6 @@ function Register(){
         catch(error){
             console.error("Error sending data:", error);
         }
-        
     }
 
     return <section>
@@ -69,13 +76,21 @@ function Register(){
             <h1 className="uppercase text-[1.5rem] cursor-pointer select-none w-fit mt-[80px] ml-[80px]">folder.</h1>
         </Link>
 
-        {/* ------------Register-Form------------ */}
+        {/* ------------Login-Form------------ */}
 
-        <h1 className="w-fit text-[3rem] m-auto mt-[60px]">Create Your Account</h1>
-        <p className="italic w-[500px] m-auto mt-[1rem] text-[1rem]/[2rem] text-justify opacity-60">Create an account to access the library of opportunities and start uploading your documents right now!</p>
+        <h1 className="w-[500px] text-[3rem] m-auto mt-[60px]">
+            {formType == 'true' ? "Create Your Account" : "Welcome Back"}
+        </h1>
+        <p className="italic w-[500px] m-auto mt-[1rem] text-[1rem]/[2rem] text-justify opacity-60">
+            {formType == 'true' ? 
+            "Create an account to access the library of opportunities and start uploading your documents right now! " : 
+            "We are glad to see you again! To access all the documents you've left here, just log in and you'll be taken to your workspace with all your documents."}
+        </p>
+
         <form onSubmit={handleSubmit} className="w-[500px] m-auto mt-[80px] grid gap-[2.5rem]">
-            <input onChange={handleChange} type="text" name="name" placeholder="Name" required pattern="^[a-zA-Z\s]{1,30}$" maxLength='50' title="Only letters and spaces allowed (max 30 characters)" value={formData.name}
-                className="text-[1.5rem] outline-0 w-full border-b-1"/>
+            {formType == 'true' ? 
+                <input onChange={handleChange} type="text" name="name" placeholder="Name" required pattern="^[a-zA-Z\s]{1,30}$" maxLength='50' title="Only letters and spaces allowed (max 30 characters)" value={formData.name}
+                    className="text-[1.5rem] outline-0 w-full border-b-1"/> : <></>}
             <input onChange={handleChange} type="email" name="email" placeholder="Email" required value={formData.email}
                 className="text-[1.5rem] outline-0 w-full border-b-1"/>
             <input onChange={handleChange} type="password" name="password" placeholder="Password" required minLength='6' maxLength='50' value={formData.password}

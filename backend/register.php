@@ -11,39 +11,59 @@
     }
 
     $data = json_decode(file_get_contents("php://input"), true);
-    $username = $data['name'] ?? '';
-    $email = $data['email'] ?? '';
-    $password = $data['password'] ?? '';
+    $username = $data['name'];
+    $email = $data['email'];
+    $password = $data['password'];
+    $register = $data['register'];
 
-    $query = "SELECT user_name, user_email FROM users_db WHERE user_name = ? OR user_email = ?";
+    $response = [
+        "loggedIn" => false,
+        "message" => ''
+    ];
+
+    $query = "SELECT user_name, user_email, user_password FROM users_db WHERE user_name = ? OR user_email = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ss", $username, $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    $response = [
-        "usernameExists" => false,
-        "emailExists" => false,
-    ];
+    if($register === 'true'){
+        if($result->num_rows > 0){
+            $response["loggedIn"] = false;
+            $response["message"] = "Email or username already exists";
+        }
+        else{
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    while ($row = $result->fetch_assoc()) {
-        if ($row['user_name'] === $username) $response["usernameExists"] = true;
-        if ($row['user_email'] === $email) $response["emailExists"] = true;
-    }
+            $insertQuery = "INSERT INTO users_db (user_name, user_email, user_password) VALUES (?, ?, ?)";
+            $insertStmt = $conn->prepare($insertQuery);
+            $insertStmt->bind_param("sss", $username, $email, $hashedPassword);
+            $insertStmt->execute();
 
-    if ($response["usernameExists"] || $response["emailExists"]) {
+            $response["loggedIn"] = true;
+            $response["message"] = "Account successfuly created";
+        }
         echo json_encode($response);
-        exit;
     }
+    else{
+        if($result->num_rows === 0){
+            $response["loggedIn"] = false;
+            $response["message"] = "Email doesn't exist";
+        }
+        else{
+            $user = $result->fetch_assoc();
+            $hashedPassword = $user['user_password'];
 
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-    $insertQuery = "INSERT INTO users_db (user_name, user_email, user_password) VALUES (?, ?, ?)";
-    $insertStmt = $conn->prepare($insertQuery);
-    $insertStmt->bind_param("sss", $username, $email, $hashedPassword);
-
-    if ($insertStmt->execute()) {
-        echo json_encode(["success" => true]);
+            if (password_verify($password, $hashedPassword)) {
+                $response["loggedIn"] = true;
+                $response["message"] = "Successfully logged in";
+            }
+            else{
+                $response["loggedIn"] = false;
+                $response["message"] = "Wrong password";
+            }
+        }  
+        echo json_encode($response);
     }
     $conn->close();
 ?>
