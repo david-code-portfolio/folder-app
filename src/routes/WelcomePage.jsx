@@ -10,13 +10,13 @@ function WelcomePage(){
 
         {/* ------------Bottom-Part-Screen------------ */}
 
-        <section className='lg:flex justify-between sm:mx-[80px] mx-[5.35vw] lg:align-bottom md:mt-[14.5vh] mt-[200px] mb-[80px] gap-[50px]'>
+        <section className='lg:flex justify-between sm:mx-[80px] mx-[5.35vw] lg:align-bottom md:mt-[10vh] mt-[200px] mb-[80px] gap-[50px]'>
 
             {/* ------------Button-section------------ */}
 
-            <div className='flex-col flex lg:gap-[10px] justify-end gap-[5px] items-start lg:mb-0 md:mb-[14.5vh] mb-[200px]'>
-                <SimplyfiedBtn button_text={"get started"} page_location={"register"}></SimplyfiedBtn>
-                <SimplyfiedBtn button_text={"log in"} page_location={"register"}></SimplyfiedBtn>
+            <div className='flex-col flex lg:gap-5 justify-end gap-[5px] items-start lg:mb-0 md:mb-[14.5vh] mb-[200px]'>
+                <SimplyfiedBtn button_text={"get started"} page_location={"login"}></SimplyfiedBtn>
+                <SimplyfiedBtn button_text={"log in"} page_location={"login"}></SimplyfiedBtn>
             </div>
 
             {/* ------------About-section------------ */}

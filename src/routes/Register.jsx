@@ -47,6 +47,7 @@ function Register(){
                 }
                 else{
                     localStorage.setItem('user', formData)
+                    sessionStorage.setItem('location', 'dashboard')
                     window.alert(data.message)
                     navigate('/dashboard')
                 }
@@ -57,6 +58,7 @@ function Register(){
                 }
                 else{
                     localStorage.setItem('user', formData)
+                    sessionStorage.setItem('location', 'dashboard')
                     window.alert(data.message)
                     navigate('/dashboard')
                 }
@@ -99,7 +101,7 @@ function Register(){
                 className="text-[1.5rem] outline-0 w-full border-b-1"/>
             <input onChange={handleChange} type="password" name="password" placeholder="Password" required minLength='6' maxLength='50' value={formData.password}
                 className="text-[1.5rem] outline-0 w-full border-b-1"/>
-            <button type="submit" className="uppercase cursor-pointer w-fit md:text-[2rem] text-[1.5rem] hover:translate-x-[10%] hover:opacity-100 duration-200 opacity-60">
+            <button type="submit" className="simple_btn">
                 {formType == 'true' ? "get started" : "log in"}
             </button>
         </form>

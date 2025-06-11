@@ -1,5 +1,4 @@
 import { Link } from "react-router"
-import { useEffect, useState } from "react"
 
 function SimplyfiedBtn ({button_text, page_location}){
     const formType = () => {
@@ -7,7 +6,7 @@ function SimplyfiedBtn ({button_text, page_location}){
     }
 
     return <Link to={`/${page_location}`}>
-        <button onClick={formType} className="uppercase simplyfied_btn cursor-pointer lg:text-[2rem] text-[1.5rem]">
+        <button onClick={formType} className="simple_btn">
             {button_text}
         </button>
     </Link>
