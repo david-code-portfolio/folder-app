@@ -1,4 +1,4 @@
-import SimplyfiedBtn from '../components/button components/SimplyfiedBtn'
+import MainBtn from '../components/button components/MainBtn'
 
 function WelcomePage(){
     return <>
@@ -15,8 +15,8 @@ function WelcomePage(){
             {/* ------------Button-section------------ */}
 
             <div className='flex-col flex lg:gap-5 justify-end gap-[5px] items-start lg:mb-0 md:mb-[14.5vh] mb-[200px]'>
-                <SimplyfiedBtn button_text={"get started"} page_location={"login"}></SimplyfiedBtn>
-                <SimplyfiedBtn button_text={"log in"} page_location={"login"}></SimplyfiedBtn>
+                <MainBtn button_text={"get started"} page_location={"login"}></MainBtn>
+                <MainBtn button_text={"log in"} page_location={"login"}></MainBtn>
             </div>
 
             {/* ------------About-section------------ */}

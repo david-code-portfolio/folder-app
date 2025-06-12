@@ -3,11 +3,17 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 
 function Register(){
+
+    /* ------------Login-or-Register------------ */
+
     const [formType, setFormType] = useState(localStorage.getItem('register'))
     const changeFormType = () => {
         formType === 'true' ? localStorage.setItem('register', false) : localStorage.setItem('register', true)
         setFormType(localStorage.getItem('register'))
     }
+
+    /* ------------Handle-Registration/Login------------ */
+    
     const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
@@ -46,7 +52,7 @@ function Register(){
                     window.alert(data.message)
                 }
                 else{
-                    localStorage.setItem('user', formData)
+                    localStorage.setItem('user', formData.email)
                     sessionStorage.setItem('location', 'dashboard')
                     window.alert(data.message)
                     navigate('/dashboard')
@@ -57,7 +63,8 @@ function Register(){
                     window.alert(data.message)
                 }
                 else{
-                    localStorage.setItem('user', formData)
+                    localStorage.setItem('user', formData.email)
+                    console.log(formData)
                     sessionStorage.setItem('location', 'dashboard')
                     window.alert(data.message)
                     navigate('/dashboard')

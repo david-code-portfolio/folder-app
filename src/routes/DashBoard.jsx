@@ -9,15 +9,6 @@ function DashBoard(){
 
     const [location, setLocation] = useState(sessionStorage.getItem('location'))
 
-    useEffect(() => {
-        if(location === 'folderEdit'){
-            console.log('Now you can edit your folders')
-        }
-        else{
-            console.log('You are on Dashboard')
-        }
-    }, [location])
-
     /* ------------Log-Out-Function------------ */
 
     const handleLogout = () => {
@@ -27,9 +18,16 @@ function DashBoard(){
         window.alert("You've been successfuly logged out")
     }
 
-    /* ------------Edit-Folders-Function------------ */
+    /* ------------Navigation-Function------------ */
 
-    
+    const [userFolders, setUserFolders] = useState([JSON.parse(sessionStorage.getItem('userData'))])
+
+    useEffect(() => {
+        setUserFolders(JSON.parse(sessionStorage.getItem('userData')))
+        console.log(userFolders)
+    }, [])
+
+    console.log("Dashboard loaded")
     
     return <>
         <div className='absolute w-full overflow-hidden h-fit md:top-[250px] top-[250px] -z-10'>
@@ -49,14 +47,17 @@ function DashBoard(){
                 {/* ------------Folders------------ */}
 
                 <div className="flex flex-col gap-5 w-fit">
-                    <button onClick={() => setLocation('dashboard')} className={`smaller_simple_btn ${location === 'dashboard' ? 'active_btn_state' : ''}`}>dashboard</button>
+                <button onClick={() => setLocation('dashboard')} className={`smaller_simple_btn ${location === 'dashboard' ? 'active_btn_state' : ''}`}>dashboard</button>
+                    {userFolders.map((folder, index) => (
+                        <button onClick={() => setLocation(folder)} key={index} className={`smaller_simple_btn ${location === folder ? 'active_btn_state' : ''}`}>{folder.folder_name}</button>
+                    ))}
                 </div>
 
                 {/* ------------Actions------------ */}
 
                 <div className="flex flex-col gap-5 w-fit align-bottom mt-[80px]">
-                    <button onClick={() => setLocation('folderEdit')} className={`smaller_simple_btn ${location === 'folderEdit' ? "active_btn_state" : ""}`}>edit folders</button>
-                    <button onClick={handleLogout} className="smaller_simple_btn">LOG OUT</button>
+                    <button onClick={() => setLocation('folderEdit')} className={`smaller_simple_btn w-fit ${location === 'folderEdit' ? "active_btn_state" : ""}`}>edit folders</button>
+                    <button onClick={handleLogout} className="smaller_simple_btn w-fit">LOG OUT</button>
                 </div>
             </div>
 
