@@ -1,12 +1,27 @@
-import { useState, useEffect } from "react"
 
-function Folder({text}){
-    const [userFolders, setUserFolders] = useState(JSON.parse(sessionStorage.getItem('userData')))
 
-    const handleRemove = () => {
-        const updatedFolders = userFolders.filter(folder => folder.folder_name !== text)
-        setUserFolders(updatedFolders)
-        sessionStorage.setItem("userData", JSON.stringify(updatedFolders));
+function Folder({text, userFolders, setUserFolders}){
+    const handleRemove = async () => {
+        try{
+            const res = await fetch('http://localhost/portfolio/folder-app/backend/userData.php', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    action: "delete",
+                    loggedUser: localStorage.getItem('user'),
+                    folderName: text
+                })
+            })
+
+            const updatedFolders = await res.json()
+            setUserFolders(updatedFolders)
+            sessionStorage.setItem("userData", JSON.stringify(updatedFolders));
+        }
+        catch{
+
+        }
     }
 
     return <div className="folder relative after:content-[''] after:block after:h-[2px] after:bg-[var(--dark_color)] after:w-full after:mt-1 w-full">

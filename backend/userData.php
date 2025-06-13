@@ -23,6 +23,11 @@
         $stmt->bind_param("is", $userId, $getFolderName);
         $stmt->execute();
     }
+    if($action === 'delete'){
+        $stmt = $conn->prepare("DELETE FROM user_folders_db WHERE user_id = ? AND folder_name = ?");
+        $stmt->bind_param("is", $userId, $getFolderName);
+        $stmt->execute();
+    }
 
     $stmt = $conn->prepare("SELECT folder_name FROM user_folders_db WHERE user_id = ?");
     $stmt->bind_param("i", $userId);

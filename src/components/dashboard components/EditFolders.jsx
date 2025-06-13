@@ -1,15 +1,7 @@
 import { useState, useEffect } from "react"
 import Folder from "./Folder"
 
-function EditFolders(){
-
-    /* ------------Display-Foldes------------ */
-
-    const [userFolders, setUserFolders] = useState([])
-
-    useEffect(() => {
-        setUserFolders(JSON.parse(sessionStorage.getItem('userData')))
-    }, [])
+function EditFolders({userFolders, setUserFolders}){
 
     /* ------------Create-New-Folder------------ */
 
@@ -52,9 +44,7 @@ function EditFolders(){
         }
     }
 
-    console.log(sessionStorage.getItem('userData'))
-
-    return <section className="">
+    return <section className="w-full">
         {/* ------------Create-New-Folder------------ */}
 
         <div className="folder relative after:content-[''] after:block after:h-[2px] after:bg-[var(--dark_color)] after:w-full after:mt-1 w-full">
@@ -72,7 +62,7 @@ function EditFolders(){
 
         <div className="grid gap-5 mt-10">
             {userFolders.map((folder, index) => (
-                <Folder text={folder.folder_name} key={index}></Folder>
+                <Folder text={folder.folder_name} key={index} userFolders={userFolders} setUserFolders={setUserFolders}></Folder>
             ))}
         </div>
     </section>

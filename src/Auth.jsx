@@ -17,7 +17,6 @@ function Auth(){
                 })
             })
             const userData = await res.json();
-            console.log(userData)
             sessionStorage.setItem('userData', JSON.stringify(userData))
         }
     }
