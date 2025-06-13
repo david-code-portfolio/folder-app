@@ -20,14 +20,11 @@ function DashBoard(){
 
     /* ------------Navigation-Function------------ */
 
-    const [userFolders, setUserFolders] = useState([JSON.parse(sessionStorage.getItem('userData'))])
+    const [userFolders, setUserFolders] = useState([sessionStorage.getItem('userData')])
 
     useEffect(() => {
         setUserFolders(JSON.parse(sessionStorage.getItem('userData')))
-        console.log(userFolders)
-    }, [])
-
-    console.log("Dashboard loaded")
+    }, [sessionStorage.getItem('userData')])
     
     return <>
         <div className='absolute w-full overflow-hidden h-fit md:top-[250px] top-[250px] -z-10'>
@@ -49,7 +46,7 @@ function DashBoard(){
                 <div className="flex flex-col gap-5 w-fit">
                 <button onClick={() => setLocation('dashboard')} className={`smaller_simple_btn ${location === 'dashboard' ? 'active_btn_state' : ''}`}>dashboard</button>
                     {userFolders.map((folder, index) => (
-                        <button onClick={() => setLocation(folder)} key={index} className={`smaller_simple_btn ${location === folder ? 'active_btn_state' : ''}`}>{folder.folder_name}</button>
+                        <button onClick={() => setLocation(folder)} key={index} className={`smaller_simple_btn w-fit ${location === folder ? 'active_btn_state' : ''}`}>{folder.folder_name}</button>
                     ))}
                 </div>
 

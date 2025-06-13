@@ -64,7 +64,6 @@ function Register(){
                 }
                 else{
                     localStorage.setItem('user', formData.email)
-                    console.log(formData)
                     sessionStorage.setItem('location', 'dashboard')
                     window.alert(data.message)
                     navigate('/dashboard')

@@ -24,6 +24,9 @@ p, input{
     font-family: $paragraph_font;
     color: $dark_color;
 }
+.inputBtn{
+    font-family: $heading_font;
+}
 .faded_text{
     color: $grey_color;
 }
@@ -78,4 +81,23 @@ body{
 }
 .active_btn_state{
     opacity: 1;
+}
+
+/* ------------Folder/Document------------ */
+
+.folder{
+    font-family: $heading_font;
+    color: $dark_color;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    text-align: left;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.2s;
+    opacity: 0.5;
+
+    &:hover{
+        transform: scale(1.025);
+        opacity: 1;
+    }
 }

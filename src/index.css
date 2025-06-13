@@ -5,4 +5,7 @@
     --dark_color: rgb(56,56,56);
     --grey_color: rgb(173,173,173);
     --greyer_color: rgb(95,95,95);
+
+    --heading_font: Konkhmer Sleokchher;
+    --paragraph_font: Inter;
 }

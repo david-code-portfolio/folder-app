@@ -5,18 +5,31 @@
     header("Access-Control-Allow-Methods: POST, OPTIONS");
     header("Access-Control-Allow-Headers: Content-Type");
 
-    $user = json_decode(file_get_contents("php://input"), true);
-    $userData = $user['loggedUser'] ?? '';
+    $data = json_decode(file_get_contents("php://input"), true);
+    $action = $data['action'] ?? '';
+    $userEmail = $data['loggedUser'] ?? '';
+    $getFolderName = $data['folderName'] ?? '';
 
-    $sql = "SELECT folder_name FROM user_folders_db WHERE user_id =
-        (SELECT user_id FROM users_db WHERE user_email = ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $userData);
+    $stmt = $conn->prepare("SELECT user_id FROM users_db WHERE user_email = ?");
+    $stmt->bind_param("s", $userEmail);
     $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
 
+    $userId = $user['user_id'];
+
+    if($action === 'insert'){
+        $stmt = $conn->prepare("INSERT INTO user_folders_db (user_id, folder_name) VALUES (?, ?)");
+        $stmt->bind_param("is", $userId, $getFolderName);
+        $stmt->execute();
+    }
+
+    $stmt = $conn->prepare("SELECT folder_name FROM user_folders_db WHERE user_id = ?");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
     $result = $stmt->get_result();
 
-    $userData = array();
+    $userData = [];
 
     if($result->num_rows > 0){
         while($row = $result->fetch_assoc()){
@@ -25,5 +38,6 @@
     }
 
     echo json_encode($userData);
+    
     $conn->close();
 ?>
