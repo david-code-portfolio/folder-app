@@ -24,7 +24,7 @@ function Folder({text, userFolders, setUserFolders}){
         }
     }
 
-    return <div className="folder relative after:content-[''] after:block after:h-[2px] after:bg-[var(--dark_color)] after:w-full after:mt-1 w-full">
+    return <div className="folder md:text-[1.5rem]/[1.5rem] text-[1.25rem]/[1.25rem] relative after:content-[''] after:block after:h-[2px] after:bg-[var(--dark_color)] after:w-full after:mt-1 w-full">
         <span className="inline-flex justify-between w-full">
             {text}
             <button onClick={handleRemove}>

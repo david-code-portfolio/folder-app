@@ -10,15 +10,15 @@ function DashBoard(){
     const [userFolders, setUserFolders] = useState([])
 
     useEffect(() => {
-        setUserFolders(JSON.parse(sessionStorage.getItem('userData')))
+        setUserFolders(JSON.parse(localStorage.getItem('userData')))
     }, [])
     
     /* ------------Dashboard-Locations------------ */
 
-    const [location, setLocation] = useState(sessionStorage.getItem('location'))
+    const [location, setLocation] = useState(localStorage.getItem('location'))
 
         const handleLocationChange = (location) => {
-            sessionStorage.setItem('location', location)
+            localStorage.setItem('location', location)
             setLocation(location)
         }
 
@@ -26,9 +26,38 @@ function DashBoard(){
 
     const handleLogout = () => {
         localStorage.clear()
-        sessionStorage.clear()
         navigate('/')
         window.alert("You've been successfuly logged out")
+    }
+
+    /* ------------Hamburger-Menu-Function------------ */
+
+    const [isToggled, setIsToggled] = useState(true)
+
+    const toggleMenu = () => {
+        setIsToggled(prev => !prev)
+    }
+
+    /* ------------OnClick-Function------------ */
+
+    const menuIcon = !isToggled ? 
+        <svg width="30" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 20L0 18L8 10L0 2L2 0L10 8L18 0L20 2L12 10L20 18L18 20L10 12L2 20Z" fill="currentColor"/>
+        </svg> :
+        <svg width="30" height="20" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 20V16.6667H30V20H0ZM0 11.6667V8.33333H30V11.6667H0ZM0 3.33333V0H30V3.33333H0Z" fill="currentColor"/>
+        </svg>
+
+    const OnClick = (folder) => {
+        toggleMenu()
+        handleLocationChange(folder)
+        menuIcon = folder ? 
+            <svg width="30" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 20L0 18L8 10L0 2L2 0L10 8L18 0L20 2L12 10L20 18L18 20L10 12L2 20Z" fill="currentColor"/>
+            </svg> :
+            <svg width="30" height="20" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 20V16.6667H30V20H0ZM0 11.6667V8.33333H30V11.6667H0ZM0 3.33333V0H30V3.33333H0Z" fill="currentColor"/>
+            </svg>
     }
 
     return <>
@@ -38,21 +67,27 @@ function DashBoard(){
         <section className="grid grid-cols-[fit-content(100%)_auto_fit-content(100%)] grid-rows-[fit-content(100%)_auto] h-[100vh] md:p-20 p-5">
 
             {/* ------------Top-Screen-Content------------ */}
-            <div className="w-full h-fit col-span-3 flex justify-between">
+            <div className="w-full h-fit col-span-3 flex justify-between relative">
                 <h1 className="relative uppercase md:text-[1.5rem] text-[1.25rem] cursor-default select-none w-full h-fit">
                     folder.
-                    <span className="absolute text-[1rem] top-[75%] left-0 text-[var(--grey_color)] min-lg:hidden block">{location}</span>
+                    {isToggled ? <span className="absolute text-[1rem] top-[75%] left-0 text-[var(--grey_color)] min-lg:hidden block">{location}</span> : '' }
                 </h1>
                 {/* ------------Hamburger-Menu------------ */}
-                <div className="max-lg:block hidden">
-                    <button className="cursor-pointer align-middle">
-                        <svg width="30" height="20" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0 20V16.6667H30V20H0ZM0 11.6667V8.33333H30V11.6667H0ZM0 3.33333V0H30V3.33333H0Z" fill="currentColor"/>
-                        </svg>
+                <div className="max-lg:flex hidden w-fit">
+                    <button onClick={toggleMenu} className="cursor-pointer align-middle">
+                        {menuIcon}
                     </button>
-                    
-
                 </div>
+                {!isToggled ?
+                <div className="absolute right-0 top-[100%] w-full pt-20 grid gap-5 lg:hidden">
+                    {userFolders.map((folder, index) => (
+                        <button onClick={() => OnClick(folder.folder_name)} key={index} className={`smaller_simple_btn ${location === folder.folder_name ? 'active_btn_state' : ''}`}>{folder.folder_name}</button>
+                    ))}
+                    <div className="flex flex-col gap-5 w-fit align-bottom mt-[80px]">
+                        <button onClick={() => OnClick('folder edit')} className={`smaller_simple_btn w-fit ${location === 'folder edit' ? "active_btn_state" : ""}`}>edit folders</button>
+                        <button onClick={handleLogout} className="smaller_simple_btn w-fit">LOG OUT</button>
+                    </div>
+                </div> : '' }
             </div>
 
             {/* ------------Left-Screen-Content------------ */}
@@ -71,15 +106,15 @@ function DashBoard(){
                 {/* ------------Actions------------ */}
 
                 <div className="flex flex-col gap-5 w-fit align-bottom mt-[80px]">
-                    <button onClick={() => handleLocationChange('folderEdit')} className={`smaller_simple_btn w-fit ${location === 'folderEdit' ? "active_btn_state" : ""}`}>edit folders</button>
+                    <button onClick={() => handleLocationChange('folder edit')} className={`smaller_simple_btn w-fit ${location === 'folder edit' ? "active_btn_state" : ""}`}>edit folders</button>
                     <button onClick={handleLogout} className="smaller_simple_btn w-fit">LOG OUT</button>
                 </div>
             </div>
 
             {/* ------------Center-Screen-Content------------ */}
 
-            <section className="pt-18 xl:pl-80 pl-40 xl:w-2/3 w-4/5 min-w-[400px] max-w-[1000px] max-lg:hidden">
-                {location === 'folderEdit' ? <EditFolders userFolders={userFolders} setUserFolders={setUserFolders}></EditFolders> : ""}
+            <section className={`pt-18 xl:pl-80 pl-0 xl:w-2/3 w-full xl:col-span-1 col-span-3 max-w-[1000px] ${isToggled ? "max-lg:block" : "max-lg:hidden"}`}>
+                {location === 'folder edit' ? <EditFolders userFolders={userFolders} setUserFolders={setUserFolders}></EditFolders> : ""}
             </section>
         </section>
     </>

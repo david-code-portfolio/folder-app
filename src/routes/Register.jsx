@@ -53,7 +53,7 @@ function Register(){
                 }
                 else{
                     localStorage.setItem('user', formData.email)
-                    sessionStorage.setItem('location', 'dashboard')
+                    localStorage.setItem('location', 'dashboard')
                     window.alert(data.message)
                     navigate('/dashboard')
                 }
@@ -64,7 +64,7 @@ function Register(){
                 }
                 else{
                     localStorage.setItem('user', formData.email)
-                    sessionStorage.setItem('location', 'dashboard')
+                    localStorage.setItem('location', 'dashboard')
                     window.alert(data.message)
                     navigate('/dashboard')
                 }

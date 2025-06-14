@@ -17,15 +17,15 @@ function Auth(){
                 })
             })
             const userData = await res.json();
-            sessionStorage.setItem('userData', JSON.stringify(userData))
+            localStorage.setItem('userData', JSON.stringify(userData))
         }
     }
 
     useEffect(() => {
         fetchUserData()
-    }, [sessionStorage.getItem('userData')])
+    }, [localStorage.getItem('userData')])
         
 
-    return localStorage.getItem('user') ? sessionStorage.getItem('userData') ? <DashBoard></DashBoard> : fetchUserData() : <PageNotFound></PageNotFound>
+    return localStorage.getItem('user') ? localStorage.getItem('userData') ? <DashBoard></DashBoard> : fetchUserData() : <PageNotFound></PageNotFound>
 }
 export default Auth
