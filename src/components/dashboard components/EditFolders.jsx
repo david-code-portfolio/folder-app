@@ -6,7 +6,7 @@ function EditFolders({userFolders, setUserFolders}){
     /* ------------Create-New-Folder------------ */
 
     const [newFolder, setNewFolder] = useState({
-        folderName: ""
+        folderName: "new folder"
     })
 
     const handleFolderName = (e) => {
@@ -36,7 +36,7 @@ function EditFolders({userFolders, setUserFolders}){
             setUserFolders(folders)
 
             setNewFolder({
-                folderName: ""
+                folderName: "new folder"
             })
         }
         catch (err){

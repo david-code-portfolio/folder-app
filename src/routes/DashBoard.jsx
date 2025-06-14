@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router"
 import { useState, useEffect } from "react"
 import EditFolders from "../components/dashboard components/EditFolders"
+import DocumentList from "../components/dashboard components/DocumentList"
+import DocumentUpload from "../components/dashboard components/DocumentUpload"
 
 function DashBoard(){
     const navigate = useNavigate()
@@ -17,10 +19,10 @@ function DashBoard(){
 
     const [location, setLocation] = useState(localStorage.getItem('location'))
 
-        const handleLocationChange = (location) => {
-            localStorage.setItem('location', location)
-            setLocation(location)
-        }
+    const handleLocationChange = (location) => {
+        localStorage.setItem('location', location)
+        setLocation(location)
+    }
 
     /* ------------Log-Out-Function------------ */
 
@@ -51,13 +53,6 @@ function DashBoard(){
     const OnClick = (folder) => {
         toggleMenu()
         handleLocationChange(folder)
-        menuIcon = folder ? 
-            <svg width="30" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 20L0 18L8 10L0 2L2 0L10 8L18 0L20 2L12 10L20 18L18 20L10 12L2 20Z" fill="currentColor"/>
-            </svg> :
-            <svg width="30" height="20" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 20V16.6667H30V20H0ZM0 11.6667V8.33333H30V11.6667H0ZM0 3.33333V0H30V3.33333H0Z" fill="currentColor"/>
-            </svg>
     }
 
     return <>
@@ -80,6 +75,7 @@ function DashBoard(){
                 </div>
                 {!isToggled ?
                 <div className="absolute right-0 top-[100%] w-full pt-20 grid gap-5 lg:hidden">
+                    <button onClick={() => OnClick('dashboard')} className={`smaller_simple_btn ${location === 'dashboard' ? 'active_btn_state' : ''}`}>dashboard</button>
                     {userFolders.map((folder, index) => (
                         <button onClick={() => OnClick(folder.folder_name)} key={index} className={`smaller_simple_btn ${location === folder.folder_name ? 'active_btn_state' : ''}`}>{folder.folder_name}</button>
                     ))}
@@ -113,8 +109,9 @@ function DashBoard(){
 
             {/* ------------Center-Screen-Content------------ */}
 
-            <section className={`pt-18 xl:pl-80 pl-0 xl:w-2/3 w-full xl:col-span-1 col-span-3 max-w-[1000px] ${isToggled ? "max-lg:block" : "max-lg:hidden"}`}>
-                {location === 'folder edit' ? <EditFolders userFolders={userFolders} setUserFolders={setUserFolders}></EditFolders> : ""}
+            <section className={`mt-18 2xl:ml-80 lg:ml-40 ml-0 lg:w-3/5 max-w-[1000px] w-full lg:col-span-1 col-span-3 ${isToggled ? "max-lg:block" : "max-lg:hidden"}`}>
+                {location === 'folder edit' ? <EditFolders userFolders={userFolders} setUserFolders={setUserFolders}></EditFolders> : 
+                    location === 'upload document' ? <DocumentUpload action={handleLocationChange}></DocumentUpload> : <DocumentList action={handleLocationChange}></DocumentList>}
             </section>
         </section>
     </>
