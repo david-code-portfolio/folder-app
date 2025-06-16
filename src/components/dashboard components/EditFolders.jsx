@@ -31,7 +31,7 @@ function EditFolders({userFolders, setUserFolders}){
                     folderName: newFolder.folderName
                 })
             })
-            const folders = await res.json();
+            const folders = await res.json()
             localStorage.setItem('userData', JSON.stringify(folders))
             setUserFolders(folders)
 

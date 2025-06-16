@@ -6,6 +6,10 @@ function DocumentList({action}){
         action('upload document')
     }
 
+    const userDocs = JSON.parse(localStorage.getItem('userDocs') || [])
+
+    const filterDocs = userDocs.filter(doc => doc.folder === localStorage.getItem('location'))
+
     return <section>
         <div className="folder relative after:content-[''] after:block after:h-[2px] after:bg-[var(--dark_color)] after:w-full after:mt-1 w-full">
             <span className="inline-flex justify-between w-full">
@@ -18,8 +22,10 @@ function DocumentList({action}){
             </span>
         </div>
         <div className="mt-10 grid gap-5">
-            <Document></Document>
-            <Document></Document>
+            {
+            filterDocs.map((doc, key) => (
+                <Document name={doc.doc_name} key={key}></Document>
+            ))}
         </div>
     </section>
 }

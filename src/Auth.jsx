@@ -12,20 +12,21 @@ function Auth(){
                 },
                 body: JSON.stringify({
                     action: 'fetch',
-                    loggedUser: localStorage.getItem('user'),
-                    folderName: ''
+                    loggedUser: localStorage.getItem('user')
                 })
             })
             const userData = await res.json();
-            localStorage.setItem('userData', JSON.stringify(userData))
+            localStorage.setItem('userFolders', JSON.stringify(userData[0]))
+            localStorage.setItem('userDocs', JSON.stringify(userData[1]))
+            console.log(JSON.parse(localStorage.getItem('userDocs')))
         }
     }
 
     useEffect(() => {
         fetchUserData()
-    }, [localStorage.getItem('userData')])
+    }, [])
         
 
-    return localStorage.getItem('user') ? localStorage.getItem('userData') ? <DashBoard></DashBoard> : fetchUserData() : <PageNotFound></PageNotFound>
+    return localStorage.getItem('user') ? localStorage.getItem('userFolders') ? <DashBoard></DashBoard> : fetchUserData() : <PageNotFound></PageNotFound>
 }
 export default Auth

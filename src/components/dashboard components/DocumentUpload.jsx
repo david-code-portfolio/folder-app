@@ -4,16 +4,64 @@ function DocumentUpload({action}){
     const location = () => {
         action('dashboard')
     }
-    const [uploadedDoc, setUploadedDoc] = useState('CHOOSE DOCUMENT')
 
-    const handleFileChange = (e) => {
-        if(e.target.files.length > 0){
-            setUploadedDoc(e.target.files[0].name)
+    /* ------------Get-New-Doc-Data------------ */
+
+    const [docData, setDocData] = useState({
+        file: "CHOOSE DOCUMENT",
+        name: "new document",
+        tag: "-",
+        folder: "-"
+    })
+    const handleChange = (e) => {
+        const {name, value, type, files} = e.target
+
+        if(type === 'file'){
+            if(files.length > 0){
+                setDocData(prev => ({
+                    ...prev,
+                    [name]: files[0].name,
+                    [fileRaw]: files[0]
+                }))
+            }
+            else{
+                setDocData(prev => ({
+                    ...prev,
+                    [name]: 'CHOOSE DOCUMENT',
+                    [fileRaw]: null
+                }))
+            }
         }
         else{
-            setUploadedDoc('CHOOSE DOCUMENT')
+            setDocData(prev => ({
+                ...prev,
+                [name]: value
+            }))
         }
     }
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        const formData = new FormData()
+        formData.append("action", "insert document")
+        formData.append("loggedUser", localStorage.getItem('user'))
+        formData.append("folder", docData.folder)
+        formData.append("name", docData.name)
+        formData.append("tag", docData.tag)
+        formData.append("file", docData.fileRaw)
+        try{
+            const res = await fetch('http://localhost/portfolio/folder-app/backend/userData.php', {
+                method: "POST",
+                body: formData
+            })
+            const data = await res.json()
+            console.log(data)
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
+
     return <section>
 
         {/* ------------Cancel-Btn------------ */}
@@ -31,21 +79,25 @@ function DocumentUpload({action}){
 
         {/* ------------New-Doc-Details------------ */}
 
-        <form className="grid mt-20 grid-cols-[max-content]">
+        <form onSubmit={handleSubmit} className="grid mt-20 grid-cols-[max-content]">
             <label htmlFor="uploadDocument" className="uploadDocLabel">uploaded Document</label>
             <label className="uploadDocInput">
-                {uploadedDoc}
-                <input type="file" onChange={handleFileChange} name="uploadDocument" className="hidden"/>
+                {docData.file}
+                <input required type="file" onChange={handleChange} name="file" className="hidden"/>
             </label>
 
             <label htmlFor="doctName" className="uploadDocLabel">name</label>
-            <input type="text" name="documentName" placeholder="new document" maxLength="16" className="uploadDocInput uppercase"/>
+            <input onChange={handleChange} type="text" name="name" placeholder="new document" maxLength="16" className="uploadDocInput uppercase"/>
 
             <label htmlFor="docTag" className="uploadDocLabel">Tag</label>
-            <input type="text" name="docTag" placeholder="-" maxLength="16" className="uploadDocInput uppercase"/>
+            <input onChange={handleChange} type="text" name="tag" placeholder="-" maxLength="16" className="uploadDocInput uppercase"/>
 
             <label htmlFor="docFolder" className="uploadDocLabel">Folder</label>
-            <input type="text" name="docFolder" placeholder="-" maxLength="16" className="uploadDocInput uppercase"/>
+            <input onChange={handleChange} type="text" name="folder" placeholder="-" maxLength="16" className="uploadDocInput uppercase"/>
+
+            <button name="submit" className="smaller_simple_btn mt-10">
+                save new document
+            </button>
         </form>
     </section>
 }

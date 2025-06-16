@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router"
 import { useState, useEffect } from "react"
-import EditFolders from "../components/dashboard components/EditFolders"
 import DocumentList from "../components/dashboard components/DocumentList"
 import DocumentUpload from "../components/dashboard components/DocumentUpload"
 
@@ -15,7 +14,7 @@ function DashBoard(){
         setUserFolders(JSON.parse(localStorage.getItem('userData')))
     }, [])
     
-    /* ------------Dashboard-Locations------------ */
+    /* ------------Dashboard-Location------------ */
 
     const [location, setLocation] = useState(localStorage.getItem('location'))
 
@@ -77,10 +76,9 @@ function DashBoard(){
                 <div className="absolute right-0 top-[100%] w-full pt-20 grid gap-5 lg:hidden">
                     <button onClick={() => OnClick('dashboard')} className={`smaller_simple_btn ${location === 'dashboard' ? 'active_btn_state' : ''}`}>dashboard</button>
                     {userFolders.map((folder, index) => (
-                        <button onClick={() => OnClick(folder.folder_name)} key={index} className={`smaller_simple_btn ${location === folder.folder_name ? 'active_btn_state' : ''}`}>{folder.folder_name}</button>
+                        <button onClick={() => OnClick(folder)} key={index} className={`smaller_simple_btn ${location === folder ? 'active_btn_state' : ''}`}>{JSON.stringify(folder)}</button>
                     ))}
                     <div className="flex flex-col gap-5 w-fit align-bottom mt-[80px]">
-                        <button onClick={() => OnClick('folder edit')} className={`smaller_simple_btn w-fit ${location === 'folder edit' ? "active_btn_state" : ""}`}>edit folders</button>
                         <button onClick={handleLogout} className="smaller_simple_btn w-fit">LOG OUT</button>
                     </div>
                 </div> : '' }
@@ -95,14 +93,13 @@ function DashBoard(){
                 <div className="flex flex-col gap-5 w-fit">
                 <button onClick={() => handleLocationChange('dashboard')} className={`smaller_simple_btn ${location === 'dashboard' ? 'active_btn_state' : ''}`}>dashboard</button>
                     {userFolders.map((folder, index) => (
-                        <button onClick={() => handleLocationChange(folder.folder_name)} key={index} className={`smaller_simple_btn w-fit ${location === folder.folder_name ? 'active_btn_state' : ''}`}>{folder.folder_name}</button>
+                        <button onClick={() => handleLocationChange(folder)} key={index} className={`smaller_simple_btn w-fit ${location === folder ? 'active_btn_state' : ''}`}>{folder}</button>
                     ))}
                 </div>
 
                 {/* ------------Actions------------ */}
 
                 <div className="flex flex-col gap-5 w-fit align-bottom mt-[80px]">
-                    <button onClick={() => handleLocationChange('folder edit')} className={`smaller_simple_btn w-fit ${location === 'folder edit' ? "active_btn_state" : ""}`}>edit folders</button>
                     <button onClick={handleLogout} className="smaller_simple_btn w-fit">LOG OUT</button>
                 </div>
             </div>
@@ -110,8 +107,9 @@ function DashBoard(){
             {/* ------------Center-Screen-Content------------ */}
 
             <section className={`mt-18 2xl:ml-80 lg:ml-40 ml-0 lg:w-3/5 max-w-[1000px] w-full lg:col-span-1 col-span-3 ${isToggled ? "max-lg:block" : "max-lg:hidden"}`}>
-                {location === 'folder edit' ? <EditFolders userFolders={userFolders} setUserFolders={setUserFolders}></EditFolders> : 
-                    location === 'upload document' ? <DocumentUpload action={handleLocationChange}></DocumentUpload> : <DocumentList action={handleLocationChange}></DocumentList>}
+                {location === 'upload document' ? 
+                    <DocumentUpload action={handleLocationChange}></DocumentUpload> : 
+                    <DocumentList action={handleLocationChange}></DocumentList>}
             </section>
         </section>
     </>
