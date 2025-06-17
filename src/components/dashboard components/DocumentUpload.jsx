@@ -10,7 +10,6 @@ function DocumentUpload({action}){
     const [docData, setDocData] = useState({
         file: "CHOOSE DOCUMENT",
         name: "new document",
-        tag: "-",
         folder: "-"
     })
     const handleChange = (e) => {
@@ -20,15 +19,15 @@ function DocumentUpload({action}){
             if(files.length > 0){
                 setDocData(prev => ({
                     ...prev,
-                    [name]: files[0].name,
-                    [fileRaw]: files[0]
+                    file: files[0].name,
+                    fileRaw: files[0]
                 }))
             }
             else{
                 setDocData(prev => ({
                     ...prev,
-                    [name]: 'CHOOSE DOCUMENT',
-                    [fileRaw]: null
+                    file: 'CHOOSE DOCUMENT',
+                    fileRaw: null
                 }))
             }
         }
@@ -47,10 +46,9 @@ function DocumentUpload({action}){
         formData.append("loggedUser", localStorage.getItem('user'))
         formData.append("folder", docData.folder)
         formData.append("name", docData.name)
-        formData.append("tag", docData.tag)
         formData.append("file", docData.fileRaw)
         try{
-            const res = await fetch('http://localhost/portfolio/folder-app/backend/userData.php', {
+            const res = await fetch('http://localhost/portfolio/folder-app/backend/uploadDoc.php', {
                 method: "POST",
                 body: formData
             })
@@ -86,11 +84,8 @@ function DocumentUpload({action}){
                 <input required type="file" onChange={handleChange} name="file" className="hidden"/>
             </label>
 
-            <label htmlFor="doctName" className="uploadDocLabel">name</label>
+            <label htmlFor="docName" className="uploadDocLabel">name</label>
             <input onChange={handleChange} type="text" name="name" placeholder="new document" maxLength="16" className="uploadDocInput uppercase"/>
-
-            <label htmlFor="docTag" className="uploadDocLabel">Tag</label>
-            <input onChange={handleChange} type="text" name="tag" placeholder="-" maxLength="16" className="uploadDocInput uppercase"/>
 
             <label htmlFor="docFolder" className="uploadDocLabel">Folder</label>
             <input onChange={handleChange} type="text" name="folder" placeholder="-" maxLength="16" className="uploadDocInput uppercase"/>

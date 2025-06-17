@@ -11,7 +11,7 @@ function DashBoard(){
     const [userFolders, setUserFolders] = useState([])
 
     useEffect(() => {
-        setUserFolders(JSON.parse(localStorage.getItem('userData')))
+        setUserFolders(JSON.parse(localStorage.getItem('userFolders')))
     }, [])
     
     /* ------------Dashboard-Location------------ */
