@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react"
 
-function DocumentUpload({action}){
+function DocumentUpload({action, refresh}){
     const location = () => {
         action('dashboard')
     }
+
+    const folderList = JSON.parse(localStorage.getItem('userFolders'))
 
     /* ------------Get-New-Doc-Data------------ */
 
@@ -47,17 +49,55 @@ function DocumentUpload({action}){
         formData.append("folder", docData.folder)
         formData.append("name", docData.name)
         formData.append("file", docData.fileRaw)
-        try{
-            const res = await fetch('http://localhost/portfolio/folder-app/backend/uploadDoc.php', {
-                method: "POST",
-                body: formData
-            })
-            const data = await res.json()
-            console.log(data)
+        if(docData.name === 'new document' || docData.file === 'CHOOSE DOCUMENT'){
+            window.alert('Name or file missing')
         }
-        catch(err){
-            console.log(err)
+        else{
+            try{
+                const res = await fetch('http://localhost/portfolio/folder-app/backend/uploadDoc.php', {
+                    method: "POST",
+                    body: formData
+                })
+                const data = await res.json()
+
+                e.target.reset()
+                setDocData({
+                    file: "CHOOSE DOCUMENT",
+                    name: "new document",
+                    folder: "-"
+                })
+
+                location()
+
+                const refetchData = await fetch('http://localhost/portfolio/folder-app/backend/userData.php', {
+                    method: "POST",
+                    body: JSON.stringify({
+                        action: 'fetch',
+                        loggedUser: localStorage.getItem('user')
+                    })
+                })
+                const userData = await refetchData.json()
+                localStorage.setItem('userFolders', JSON.stringify(userData[0]))
+                localStorage.setItem('userDocs', JSON.stringify(userData[1]))
+                refresh(JSON.parse(localStorage.getItem('userFolders')))
+            }
+            catch(err){
+                console.log(err)
+            }
         }
+    }
+
+    /* ------------DropDown-Function------------ */
+
+    const [dropdownToggle, setDropdownToggle] = useState(false)
+
+    const chooseFolder = (chosed) => {
+        console.log(chosed)
+        setDocData(prev => ({
+            ...prev,
+            folder: chosed
+        }))
+        setDropdownToggle(false)
     }
 
     return <section>
@@ -81,14 +121,23 @@ function DocumentUpload({action}){
             <label htmlFor="uploadDocument" className="uploadDocLabel">uploaded Document</label>
             <label className="uploadDocInput">
                 {docData.file}
-                <input required type="file" onChange={handleChange} name="file" className="hidden"/>
+                <input type="file" onChange={handleChange} name="file" className="hidden"/>
             </label>
 
             <label htmlFor="docName" className="uploadDocLabel">name</label>
-            <input onChange={handleChange} type="text" name="name" placeholder="new document" maxLength="16" className="uploadDocInput uppercase"/>
+            <input onChange={handleChange} autoComplete="off" type="text" name="name" placeholder={docData.name} maxLength="16" className="uploadDocInput uppercase"/>
 
-            <label htmlFor="docFolder" className="uploadDocLabel">Folder</label>
-            <input onChange={handleChange} type="text" name="folder" placeholder="-" maxLength="16" className="uploadDocInput uppercase"/>
+            <span className="grid relative container z-[9999]">
+                <label htmlFor="docFolder" className="uploadDocLabel">Folder</label>
+                <input onClick={() => setDropdownToggle(true)} onChange={handleChange} autoComplete="off" type="text" name="folder" placeholder='-' value={docData.folder === '-' ? '' : docData.folder} maxLength="16" className="uploadDocInput uppercase"/>
+                {/* ------------DropDown-Menu------------ */}
+                <div className={`absolute top-[90%] z-[999] dropDown`}>
+                    {folderList.map((folder, key) => (
+                        <button type="button" onClick={() => chooseFolder(folder)} key={key} className="uppercase cursor-pointer w-fit">{folder}</button>
+                    ))}
+                </div>
+            </span>
+            
 
             <button name="submit" className="smaller_simple_btn mt-10">
                 save new document

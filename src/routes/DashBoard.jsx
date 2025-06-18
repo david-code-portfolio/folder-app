@@ -10,9 +10,13 @@ function DashBoard(){
 
     const [userFolders, setUserFolders] = useState([])
 
+    const handleSetUserFolders = (getFolders) => {
+        setUserFolders(getFolders)
+    }
+
     useEffect(() => {
-        setUserFolders(JSON.parse(localStorage.getItem('userFolders')))
-    }, [])
+        handleSetUserFolders(JSON.parse(localStorage.getItem('userFolders')))
+    }, [localStorage.getItem('userFolders')])
     
     /* ------------Dashboard-Location------------ */
 
@@ -76,7 +80,7 @@ function DashBoard(){
                 <div className="absolute right-0 top-[100%] w-full pt-20 grid gap-5 lg:hidden">
                     <button onClick={() => OnClick('dashboard')} className={`smaller_simple_btn ${location === 'dashboard' ? 'active_btn_state' : ''}`}>dashboard</button>
                     {userFolders.map((folder, index) => (
-                        <button onClick={() => OnClick(folder)} key={index} className={`smaller_simple_btn ${location === folder ? 'active_btn_state' : ''}`}>{JSON.stringify(folder)}</button>
+                        <button onClick={() => OnClick(folder)} key={index} className={`smaller_simple_btn ${location === folder ? 'active_btn_state' : ''}`}>{folder}</button>
                     ))}
                     <div className="flex flex-col gap-5 w-fit align-bottom mt-[80px]">
                         <button onClick={handleLogout} className="smaller_simple_btn w-fit">LOG OUT</button>
@@ -108,7 +112,7 @@ function DashBoard(){
 
             <section className={`mt-18 2xl:ml-80 lg:ml-40 ml-0 lg:w-3/5 max-w-[1000px] w-full lg:col-span-1 col-span-3 ${isToggled ? "max-lg:block" : "max-lg:hidden"}`}>
                 {location === 'upload document' ? 
-                    <DocumentUpload action={handleLocationChange}></DocumentUpload> : 
+                    <DocumentUpload action={handleLocationChange} refresh={handleSetUserFolders}></DocumentUpload> : 
                     <DocumentList action={handleLocationChange}></DocumentList>}
             </section>
         </section>

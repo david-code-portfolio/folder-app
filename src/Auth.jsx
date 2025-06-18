@@ -15,10 +15,9 @@ function Auth(){
                     loggedUser: localStorage.getItem('user')
                 })
             })
-            const userData = await res.json();
+            const userData = await res.json()
             localStorage.setItem('userFolders', JSON.stringify(userData[0]))
             localStorage.setItem('userDocs', JSON.stringify(userData[1]))
-            console.log(JSON.parse(localStorage.getItem('userDocs')))
         }
     }
 
