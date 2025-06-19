@@ -6,17 +6,28 @@ import DocumentUpload from "../components/dashboard components/DocumentUpload"
 function DashBoard(){
     const navigate = useNavigate()
 
+    /* ------------Filter-Folders------------ */
+
+    const [filter, setFilter] = useState('')
+
+    const handleFilter = (e) => {
+        setFilter(e.target.value)
+    }
+
     /* ------------Display-Foldes------------ */
 
-    const [userFolders, setUserFolders] = useState([])
+    const [userFolders, setUserFolders] = useState(() => {
+        const folders = localStorage.getItem('userFolders')
+        return JSON.parse(folders)
+    })
 
     const handleSetUserFolders = (getFolders) => {
         setUserFolders(getFolders)
     }
 
     useEffect(() => {
-        handleSetUserFolders(JSON.parse(localStorage.getItem('userFolders')))
-    }, [localStorage.getItem('userFolders')])
+        handleSetUserFolders(userFolders)
+    }, [userFolders])
     
     /* ------------Dashboard-Location------------ */
 
@@ -65,8 +76,8 @@ function DashBoard(){
         <section className="grid grid-cols-[fit-content(100%)_auto_fit-content(100%)] grid-rows-[fit-content(100%)_auto] h-[100vh] md:p-20 p-5">
 
             {/* ------------Top-Screen-Content------------ */}
-            <div className="w-full h-fit col-span-3 flex justify-between relative">
-                <h1 className="relative uppercase md:text-[1.5rem] text-[1.25rem] cursor-default select-none w-full h-fit">
+            <div className="w-full h-fit col-span-1 relative">
+                <h1 className="grid-span-1 relative uppercase md:text-[1.5rem] text-[1.25rem] cursor-default select-none w-fit h-fit">
                     folder.
                     {isToggled ? <span className="absolute text-[1rem] top-[75%] left-0 text-[var(--grey_color)] min-lg:hidden block">{location}</span> : '' }
                 </h1>
@@ -86,6 +97,13 @@ function DashBoard(){
                         <button onClick={handleLogout} className="smaller_simple_btn w-fit">LOG OUT</button>
                     </div>
                 </div> : '' }
+            </div>
+            {/* ------------Filter------------ */}
+            <div className="col-span-2 2xl:ml-80 lg:ml-40 ml-0 flex gap-2 cursor-pointer items-center text-[1.25rem] filterContainer">
+                <svg className="filterIcon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.6667 24V16H13.3333V18.6667H24V21.3333H13.3333V24H10.6667ZM0 21.3333V18.6667H8V21.3333H0ZM5.33333 16V13.3333H0V10.6667H5.33333V8H8V16H5.33333ZM10.6667 13.3333V10.6667H24V13.3333H10.6667ZM16 8V0H18.6667V2.66667H24V5.33333H18.6667V8H16ZM0 5.33333V2.66667H13.3333V5.33333H0Z" fill="currentColor"/>
+                </svg>
+                <input onChange={handleFilter} type="text" maxLength='16' placeholder="filter documents" className="uppercase inputBtn placeholder:text-[var(--grey_color)] outline-0"/>
             </div>
 
             {/* ------------Left-Screen-Content------------ */}
@@ -113,7 +131,7 @@ function DashBoard(){
             <section className={`mt-18 2xl:ml-80 lg:ml-40 ml-0 lg:w-3/5 max-w-[1000px] w-full lg:col-span-1 col-span-3 ${isToggled ? "max-lg:block" : "max-lg:hidden"}`}>
                 {location === 'upload document' ? 
                     <DocumentUpload action={handleLocationChange} refresh={handleSetUserFolders}></DocumentUpload> : 
-                    <DocumentList action={handleLocationChange}></DocumentList>}
+                    <DocumentList action={handleLocationChange} filter={filter}></DocumentList>}
             </section>
         </section>
     </>

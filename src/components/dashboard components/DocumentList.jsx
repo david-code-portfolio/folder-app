@@ -1,6 +1,6 @@
 import Document from "./Document"
 
-function DocumentList({action}){
+function DocumentList({action, filter}){
 
     const location = () => {
         action('upload document')
@@ -8,7 +8,14 @@ function DocumentList({action}){
 
     const userDocs = JSON.parse(localStorage.getItem('userDocs') || [])
 
-    const filterDocs = userDocs.filter(doc => doc.folder === localStorage.getItem('location'))
+    let filterDocs = userDocs.filter(doc => doc.folder === localStorage.getItem('location'))
+
+    if(filter === ''){
+
+    }
+    else{
+        filterDocs = filterDocs.filter(doc => doc.doc_name.toLowerCase().startsWith(filter.toLowerCase()))
+    }
 
     return <section>
         <div className="folder relative after:content-[''] after:block after:h-[2px] after:bg-[var(--dark_color)] after:w-full after:mt-1 w-full">

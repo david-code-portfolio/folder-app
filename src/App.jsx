@@ -1,4 +1,3 @@
-import './index.scss'
 import Register from './routes/Register'
 import WelcomePage from './routes/WelcomePage'
 import PageNotFound from './routes/PageNotFound'

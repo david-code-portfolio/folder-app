@@ -13,9 +13,12 @@ $greyer_color: rgb(95,95,95);
 $heading_font: Konkhmer Sleokchher;
 $paragraph_font: Inter;
 
-h1, h2, button{
+h1, h2{
     font-family: $heading_font;
     color: $dark_color;
+}
+button{
+    font-family: $heading_font;
 }
 h5{
     font-family: $paragraph_font;
@@ -158,4 +161,22 @@ body{
 .container:has(input:focus) .dropDown{
     max-height: 200px;
     padding: 1.25rem;
+}
+
+/* ------------Filter------------ */
+
+.filterIcon{
+    color: $grey_color;
+}
+
+.filterContainer:has(input:focus) .filterIcon{
+    color: $dark_color;
+}
+
+.filterContainer input{
+    color: $grey_color;
+}
+
+.filterContainer input:focus{
+    color: $dark_color;
 }
