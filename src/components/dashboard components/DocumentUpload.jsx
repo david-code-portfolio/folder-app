@@ -104,7 +104,7 @@ function DocumentUpload({action, refresh}){
 
         {/* ------------Cancel-Btn------------ */}
 
-        <div className="folder relative after:content-[''] after:block after:h-[2px] after:bg-[var(--dark_color)] after:w-full after:mt-1 w-full">
+        <div className="folder opacity-50 relative after:content-[''] after:block after:h-[2px] after:bg-[var(--dark_color)] after:w-full after:mt-1 w-full">
             <span className="inline-flex justify-between w-full">
                 <button onClick={location} className="inline-flex justify-between w-full cursor-pointer uppercase">
                     cancel

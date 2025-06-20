@@ -90,14 +90,13 @@ body{
 
 .folder{
     font-family: $heading_font;
-    color: $dark_color;
     font-size: 1.5rem;
     line-height: 1.5rem;
+    color: $dark_color;
     text-align: left;
     cursor: pointer;
     text-transform: uppercase;
     transition: 0.2s;
-    opacity: 0.5;
 
     &:hover{
         transform: scale(1.025);
@@ -179,4 +178,42 @@ body{
 
 .filterContainer input:focus{
     color: $dark_color;
+}
+
+/* ------------Edit-Document------------ */
+
+.editDocInput{
+    font-family: $heading_font;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    outline: 0;
+    width: fit-content;
+
+    &::placeholder{
+        color: $dark_color;
+    }
+}
+
+.editDocLabel{
+    font-family: $paragraph_font;
+    color: $grey_color;
+    font-size: 1.25rem;
+    text-transform: capitalize;
+    width: fit-content;
+}
+
+.docDetailsBtn{
+    font-family: $heading_font;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    color: $grey_color;
+    text-transform: uppercase;
+    text-align: end;
+    cursor: pointer;
+    width: fit-content;
+
+    &:hover{
+        color: $dark_color;
+        transform: translateX(-1.25rem);
+    }
 }

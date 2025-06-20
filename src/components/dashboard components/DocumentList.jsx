@@ -1,6 +1,6 @@
 import Document from "./Document"
 
-function DocumentList({action, filter}){
+function DocumentList({action, filter, docDetailToggle, openedDoc}){
 
     const location = () => {
         action('upload document')
@@ -18,7 +18,7 @@ function DocumentList({action, filter}){
     }
 
     return <section>
-        <div className="folder relative after:content-[''] after:block after:h-[2px] after:bg-[var(--dark_color)] after:w-full after:mt-1 w-full">
+        <div className="folder opacity-50 relative after:content-[''] after:block after:h-[2px] after:bg-[var(--dark_color)] after:w-full after:mt-1 w-full">
             <span className="inline-flex justify-between w-full">
                 <button onClick={location} className="inline-flex justify-between w-full cursor-pointer uppercase">
                     upload document
@@ -31,7 +31,7 @@ function DocumentList({action, filter}){
         <div className="mt-10 grid gap-5">
             {
             filterDocs.map((doc, key) => (
-                <Document name={doc.doc_name} key={key}></Document>
+                <Document name={doc.doc_name} key={key} onClick={() => docDetailToggle(doc.doc_name, true)} isOpened={openedDoc === doc.doc_name}></Document>
             ))}
         </div>
     </section>
